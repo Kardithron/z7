@@ -9,13 +9,28 @@
 <html>
 	<head>
 		<title>
-			Zadanie 7 - profil użytkownika v3
+			Zadanie 7 - profil użytkownika
 		</title>
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
 		<?php
-			echo "Logged in as a {$_SESSION['user']}.";
+			echo "Logged in as a {$_SESSION['user']}.<br>";
+			
+			// checking last failed login attempt
+			
+			require_once "/connect.php";
+			$sql = "SELECT timestamp FROM t7_log 
+						WHERE ID_users=(SELECT ID FROM t7_users WHERE user='{$_SESSION['user']}') AND fail=1
+						ORDER BY ID DESC LIMIT 1;";
+			$result = $conn->query($sql);
+			$conn->close();
+			if ($result) {
+				$row = $result->fetch_assoc();
+				echo "WARNING! Your last failed login attempt: " . $row['timestamp'] . "<br>";
+			}
+			
+			// -----------------------------------------
 			
 			if (isset($_POST['dir']))
 				$_SESSION['dir'] = $_POST['dir'];
@@ -24,7 +39,6 @@
 			
 			if (isset($_POST['newfolder'])) {
 				mkdir($_SESSION['user'] . "/" . $_POST['newfolder']);
-				//msg("New folder created: " . $_POST['newfolder'], 'home.php');
 				unset($_POST['newfolder']);
 			}
 			
@@ -75,7 +89,6 @@
 							}
 						}
 					?>
-				</form>
 			</tbody>
 		</table>
 		<br>

@@ -24,7 +24,7 @@
 			else
 				if ($row['pass'] == $pass) {
 					if ($row['fail_counter'] < 3) {
-						
+												
 						// reset counter
 						
 						$sql = "UPDATE t7_users SET fail_counter=0 WHERE user='$user';";
@@ -38,9 +38,6 @@
 						$_SESSION['userid'] = $row['ID'];
 						$_SESSION['user'] = $user;
 						header('Location: home.php');
-						
-						/*INSERT INTO t7_log (ID_users, timestamp, fail) 
-						SELECT ID, CURRENT_TIMESTAMP, 0 FROM t7_users WHERE user='$user';*/
 					}
 					else
 						msg('This account is locked down because of too many failed login attempts.', 'index.php');
