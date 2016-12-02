@@ -25,10 +25,9 @@
 						ORDER BY ID DESC LIMIT 1;";
 			$result = $conn->query($sql);
 			$conn->close();
-			if ($result) {
-				$row = $result->fetch_assoc();
+			$row = $result->fetch_assoc();
+			if ($row)
 				echo "WARNING! Your last failed login attempt: " . $row['timestamp'] . "<br>";
-			}
 			
 			// -----------------------------------------
 			
@@ -37,7 +36,7 @@
 			else
 				$_SESSION['dir'] = "";
 			
-			if (isset($_POST['newfolder'])) {
+			if ( isset($_POST['newfolder']) and !file_exists($_SESSION['user'] . "/" . $_POST['newfolder']) ) {
 				mkdir($_SESSION['user'] . "/" . $_POST['newfolder']);
 				unset($_POST['newfolder']);
 			}

@@ -22,12 +22,9 @@
 				msg('User with such a nickname already exists.', 'index.php');
 			else {
 				$sql = "INSERT INTO t7_users (user, pass) VALUES ('$user', '$pass')";
-				if ($conn->query($sql) === FALSE) 
-					echo "Error: " . $sql . "<br>" . $conn->error;
-				else {
-					mkdir("/z7/$user", 0777, true);
-					msg('Successfully registered! You can log in as a $user.', 'index.php');
-				}
+				if (!$conn->query($sql)) die("Error: " . $sql . "<br>" . $conn->error);
+				mkdir("/z7/$user", 0777, true);
+				msg("Successfully registered! You can log in as a $user.", 'index.php');
 			}
 			
 			$conn->close();
